@@ -1,0 +1,204 @@
+<?php
+
+class Refffree_costum_model extends CI_Model
+{
+
+    public $_table = 'reff_free_costum';
+    public $primary_key = 'idreff';
+    public $login_id = 'iduser';
+    public $session = 'session';
+
+
+    function __construct()
+    {
+        parent::__construct();
+    }
+
+    // Insert New records
+    public function create($insertData)
+    {
+        $result = $this->db->insert($this->_table, $insertData);
+        return $result;
+    }
+
+    public function countrow()
+    {
+        $this->db->order_by($this->primary_key, "desc");
+        $this->db->limit(1);
+        $query = $this->db->get($this->_table);
+        $rows = $query->row();
+        $rslt = $query->result_array();
+        $jum = $query->num_rows();
+        if ($jum == 0) {
+            $nomor = 0;
+        } else {
+            $nomor = $rslt[0][$this->primary_key];
+        }
+        return $nomor;
+    }
+
+    public function existitem($idfree, $idpackage)
+    {
+        $query = $this->db->select('*')
+            ->from($this->_table)
+            ->where('idfree', $idfree)
+            ->where('idpackage', $idpackage)
+            ->get();
+        $num = $query->num_rows();
+        if ($num == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // get all records
+    public function get_all()
+    {
+        $this->db->select('*')
+            ->from($this->_table)
+            ->order_by($this->primary_key, 'DESC');
+        $query = $this->db->get();
+        if ($query->num_rows() != 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    public function get($id = null, $order_by = null)
+    {
+        if (is_numeric($id)) {
+            $this->db->where($this->primary_key, $id);
+        }
+        if (is_array($id)) {
+            foreach ($id as $_key => $_values) {
+                $this->db->where($_key, $_values);
+            }
+        }
+        $q = $this->db->get($this->_table);
+        return $q->result_array();
+
+    }
+
+    // get a record by id
+    public function get_by_id($id)
+    {
+        $this->db->select('*')
+            ->from($this->_table)
+            ->where($this->primary_key, $id);
+        $query = $this->db->get();
+        if ($query->num_rows() != 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    public function get_by_login_id($login_id)
+    {
+        $this->db->select('*')
+            ->from($this->_table)
+            ->where($this->login_id, $login_id);
+        $query = $this->db->get();
+        if ($query->num_rows() != 0) {
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    public function get_order($id = null, $order_by = null)
+    {
+
+        if (is_numeric($id)) {
+            $this->db->where($this->primary_key, $id);
+        }
+        if (is_array($id)) {
+            foreach ($id as $_key => $_values) {
+                $this->db->where($_key, $_values);
+            }
+        }
+        $this->db->order_by($this->primary_key, "DESC");
+        $q = $this->db->get($this->_table);
+        return $q->result_array();
+    }
+
+    public function get_orderlimit1($id = null, $order_by = null)
+    {
+
+        if (is_numeric($id)) {
+            $this->db->where($this->primary_key, $id);
+        }
+        if (is_array($id)) {
+            foreach ($id as $_key => $_values) {
+                $this->db->where($_key, $_values);
+            }
+        }
+        $this->db->order_by($this->primary_key, "DESC");
+        $this->db->limit(1);
+        $q = $this->db->get($this->_table);
+        return $q->result_array();
+    }
+
+    // check duplicate entry or already exists
+    public function exist($id)
+    {
+        $query = $this->db->select('*')
+            ->from($this->_table)
+            ->where($this->primary_key, $id)
+            ->get();
+        $num = $query->num_rows();
+        if ($num == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function insert($data)
+    {
+        $this->db->insert($this->_table, $data);
+        return $this->db->insert_id();
+    }
+
+    public function update($new_data, $where)
+    {
+        if (is_numeric($where)) {
+            $this->db->where($this->primary_key, $where);
+        } elseif (is_array($where)) {
+            foreach ($where as $_key => $_values) {
+                $this->db->where($_key, $_values);
+            }
+        } else {
+            die("Use Parameter to update");
+        }
+        $this->db->update($this->_table, $new_data);
+        return $this->db->affected_rows();
+    }
+
+    public function delete($id)
+    {
+        if (is_numeric($id)) {
+            $this->db->where($this->primary_key, $id);
+        } elseif (is_array($id)) {
+            foreach ($id as $_key => $_values) {
+                $this->db->where($_key, $_values);
+            }
+        } else {
+            die("Use Parameter to delete");
+        }
+        $this->db->delete($this->_table);
+        return $this->db->affected_rows();
+    }
+
+    // edit a record
+    public function edit($updateData, $updateId)
+    {
+        $result = $this->db->where($this->primary_key, $updateId)->update($this->_table, $updateData);
+
+        return $result;
+    }
+
+
+}

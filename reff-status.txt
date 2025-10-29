@@ -1,0 +1,24 @@
+--------------------------------------------
+table order paket umroh
+--------------------------------------------
+status=0 -> statusorder=Booking
+status=1 -> statusorder=Proses
+status=2 -> statusorder=Selesai
+flag isvoid
+isvoid=0 ->Order Aktif
+isvoid=1 -> Order dibatalkan
+isdp=1->statusbayar=Pembayaran DP
+islunas=1->statusbayar=Pembayaran Full
+--------------------------------------------
+table  pembayaran paket umroh
+--------------------------------------------
+tipe_pembayaran=1 jenis_bayar=Bayar DP
+tipe_pembayaran=2 jenis_bayar=Pelunasan
+tipe_pembayaran=3 jenis_bayar=Pembayaran Full
+status=1 -> status_bayar=Butuh konfirmasi
+status=2 -> status_bayar=Pembayaran diterima
+status=3 -> status_bayar=Pembayaran ditolak ->alasan_reject
+flag isvoid
+isvoid=0 ->Pembayaran Aktif
+isvoid=1 -> Pembayaran dibatalkan
+
