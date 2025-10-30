@@ -7,8 +7,8 @@
 <title><?php echo @$title; ?></title>
 <meta content = "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name = "viewport">
 <!-- style sheet -->
-<link rel = "stylesheet" href = "<?php echo base_url(); ?>assets/css/AdminLTE.min.css">
-<link rel = "stylesheet" href = "<?php echo base_url(); ?>assets/css/skins/_all-skins.min.css">
+<link rel = "stylesheet" href = "<?php echo base_url(); ?>assets/css/AdminLTE.css">
+<link rel = "stylesheet" href = "<?php echo base_url(); ?>assets/css/_all-skins.min.css">
 
 <link rel = "stylesheet" href = "<?php echo base_url(); ?>assets/css/bootstrap.min.css">
 <link rel = "stylesheet" href = "<?php echo base_url(); ?>assets/css/animate.min.css">
@@ -19,7 +19,7 @@
 <!-- jQuery 2.1.4 -->
 <script src = "<?php echo base_url(); ?>assets/js/jQuery-2.1.4.min.js"></script>
 <script src = "<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
-<script src = "<?php echo base_url(); ?>assets/js/adminlte.js"></script>
+
 <?php if (isset($before_head)) {
     echo $before_head;
 }

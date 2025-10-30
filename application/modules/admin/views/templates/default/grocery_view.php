@@ -41,8 +41,8 @@
     
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-    <?php require_once 'parts/footer.php'; ?>
-  </footer>
+        <?php require_once 'parts/grocery_footer.php'; ?>
+    </footer>
 </div>
 <!-- ./wrapper -->
 </body>

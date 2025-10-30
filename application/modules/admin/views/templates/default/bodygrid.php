@@ -42,9 +42,9 @@
     </div>
     <!-- /.content-wrapper -->
     <footer class="main-footer">
-    <?php require_once 'parts/footer.php'; ?>
-    <?php require_once 'parts/datatable.php'; ?>
-  </footer>
+        <?php require_once 'parts/footer.php'; ?>
+        <?php require_once 'parts/datatable.php'; ?>
+    </footer>
 </div>
 <!-- ./wrapper -->
 </body>

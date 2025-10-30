@@ -1,0 +1,309 @@
+<script type="text/javascript" src="<?php echo base_url("assets/js/bootbox.all.min.js"); ?>" ></script>
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<p class="panel-title">Pengaturan Agent Login ke Aplikasi
+				</p>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 table-responsive">
+						<table id="manage_all" class="table table-bordered table-hover">
+							<thead>
+							<tr>
+								<th>#</th>
+								<th> Photo</th>
+                                <th> Nama Agent</th>
+								<th> Nama User</th>
+								<th> Tipe Agent</th>
+								<th> Status</th>
+								<th> Action</th>
+							</tr>
+							</thead>
+
+
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--========================  User Modal  section =================-->
+<div class="modal fade" id="modalUser" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<!-- Modal Header -->
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<p class="modal-title" id="myModalLabel"></p>
+			</div>
+
+			<!-- Modal Body -->
+			<div class="modal-body">
+				<div id="modal_data"></div>
+			</div>
+
+			<!-- Modal Footer -->
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default"
+				        data-dismiss="modal">
+					Close
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	@media screen and (min-width: 768px) {
+		#modalUser .modal-dialog {
+			width: 75%;
+			border-radius: 5px;
+		}
+	}
+</style>
+
+<script>
+
+	function reload_table() {
+		table.ajax.reload(null, false); //reload datatable ajax
+	}
+
+
+	// function create() {
+    //
+	// 	$("#modal_data").empty();
+	// 	$('.modal-title').text('Add New User'); // Set Title to Bootstrap modal title
+    //
+	// 	$.ajax({
+	// 		type: 'POST',
+	// 		url: BASE_URL + 'admin/user/create_form',
+	// 		success: function (msg) {
+	// 			$("#modal_data").html(msg);
+	// 			$('#modalUser').modal('show'); // show bootstrap modal
+	// 		},
+	// 		error: function (result) {
+	// 			$("#modal_data").html("Sorry Cannot Load Data");
+	// 		}
+	// 	});
+    //
+	// }
+
+</script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#manage_all").on("click", ".edit", function () {
+
+			$("#modal_data").empty();
+			$('.modal-title').text('Edit User'); // Set Title to Bootstrap modal title
+
+			var id = $(this).attr('id');
+			if (id == 1) {
+				 bootbox.alert("Tidak bisa merubah akun Administrator");
+				 return;
+			}
+			$.ajax({
+				url: BASE_URL + 'admin/agents/edit_form',
+				type: 'POST',
+				data: 'id=' + id,
+				success: function (msg) {
+					$("#modal_data").html(msg);
+					$('#modalUser').modal('show'); // show bootstrap modal
+				},
+				error: function (result) {
+					$("#modal_data").html("Sorry Cannot Load Data");
+				}
+			});
+		});
+	});
+</script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#manage_all").on("click", ".viewDetails", function () {
+
+			$("#modal_data").empty();
+			$('.modal-title').text('View Details'); // Set Title to Bootstrap modal title
+
+			var id = $(this).attr('id');
+
+			$.ajax({
+				url: BASE_URL + 'admin/user/view_user_details_modal_content',
+				type: 'POST',
+				data: 'id=' + id,
+				success: function (msg) {
+					$("#modal_data").html(msg);
+					$('#modalUser').modal('show'); // show bootstrap modal
+					//    $('#modalUser').modal({backdrop: 'static', keyboard: false});
+				},
+				error: function (result) {
+					$("#modal_data").html("Sorry Cannot Load Data");
+				}
+			});
+		});
+	});
+</script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#manage_all").on("click", ".reset", function () {
+
+			//$("#modal_data").empty();
+			//$('.modal-title').text('View Details'); // Set Title to Bootstrap modal title
+			var id = $(this).attr('id');
+			if (id == 1) {
+				 bootbox.alert("Tidak bisa merubah akun Administrator");
+				 return;
+			}
+            swal({
+				title: "Apa Anda Yakin?",
+				text: "Anda yakin ingin mereset katasandi akun ini !? \n default katasandi : 85T-t124V3L",
+				type: "warning",
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Yes, Reset it!"
+			}, function () {
+				$.ajax({
+					type: 'POST',
+					url: BASE_URL + 'admin/user/resetpwd',
+					dataType: 'json',
+					data: 'id=' + id,
+					success: function (data) {
+
+						if (data.type === 'success') {
+
+							swal("Done!", "It was succesfully reset password!", "success");
+							reload_table();
+
+						} else if (data.type === 'danger') {
+
+							swal("Error reset!", "Please try again", "error");
+
+						}
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+						swal("Error deleting!", "Please try again", "error");
+					}
+				});
+			});
+		});
+	});
+</script>
+<script type="text/javascript">
+
+	$(document).ready(function () {
+		$("#manage_all").on("click", ".delete", function () {
+            var str = $(this).attr('id');
+            var strid = str.split("-");
+			var id = strid[0];
+            var active = strid[1];
+			swal({
+				title: "Apa anda yakin?",
+				text: "Akun ini akan dinonaktifkan atau diaktifkan kembali.!! \n",
+				type: "warning",
+				showCancelButton: true,
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Ya"
+			}, function () {
+				$.ajax({
+					type: 'POST',
+					url: BASE_URL + 'admin/agents/togleactive',
+					dataType: 'json',
+					data: 'id=' + id+'&status='+active,
+					success: function (data) {
+						if (data.type === 'success') {
+							swal("Done!", "It was succesfully!", "success");
+							reload_table();
+						} else if (data.type === 'danger') {
+							swal("Error !", "Please try again", "error");
+						}
+					},
+					error: function (xhr, ajaxOptions, thrownError) {
+						swal("Error deleting!", "Please try again", "error");
+					}
+				});
+			});
+		});
+	});
+
+</script>
+<script>
+    $(document).ready(function () {
+
+        table = $('#manage_all').DataTable({
+            dom: "<'row'<'col-sm-4'l><'col-sm-8'f>>" +
+            "<'row'<'col-sm-12'>>" + //
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-4'i><'col-sm-8'p>>",
+
+            "lengthMenu": [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]],
+
+            "ajax": {
+                "url": BASE_URL + 'admin/agents/get_all_agent',
+                "type": "POST"
+            },
+
+            "autoWidth": false,
+
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fa fa-table"> EXCEL </i>',
+                    titleAttr: 'Excel',
+                    exportOptions: {
+                        columns: ':visible:not(.not-exported)'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: '<i class="fa fa-file-pdf-o"> PDF</i>',
+                    titleAttr: 'PDF',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fa fa-print"> PRINT </i>',
+                    titleAttr: 'Print',
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+
+                },
+                {
+                    extend: 'colvis',
+                    text: '<i class="fa fa-eye-slash"> Column Visibility </i>',
+                    titleAttr: 'Visibility'
+                }
+
+
+            ],
+
+            "oSelectorOpts": {filter: 'applied', order: "current"},
+            language: {
+                buttons: {},
+
+                "emptyTable": "<strong style='color:#ff0000'> Sorry!!! No Records have found </strong>",
+                "search": "",
+                "paginate": {
+                    "next": "Next",
+                    "previous": "Previous"
+                },
+
+                "zeroRecords": ""
+            }
+        });
+
+
+        $('.dataTables_filter input[type="search"]').attr('placeholder', 'Type here to search...').css({'width': '220px'});
+
+        $('[data-toggle="tooltip"]').tooltip();
+
+    });
+</script>
