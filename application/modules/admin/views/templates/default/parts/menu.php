@@ -185,12 +185,12 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="treeview">
-                        <a href="<?php echo site_url('admin/wa/gateway/'); ?>">
+                        <a href="<?php echo site_url('admin/settings/all_settings/'); ?>">
                             <i class="fa fa-cog"></i> <span>Setting</span>
                         </a>
                     </li>
                     <li class="treeview">
-                        <a href="<?php echo site_url('admin/wa/gateway/'); ?>">
+                        <a href="<?php echo site_url('admin/cabang/'); ?>">
                             <i class="fa fa-map-marker"></i> <span>Cabang</span>
                         </a>
                     </li>

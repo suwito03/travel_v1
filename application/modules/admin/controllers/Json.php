@@ -4,6 +4,7 @@ class Json extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('cabang_model');
         $this->load->model('provinsi_model');
         $this->load->model('kabupaten_model');
         $this->load->model('kecamatan_model');
@@ -72,6 +73,27 @@ class Json extends CI_Controller {
             }
         }
         print_r($save);
+    }
+
+    public function getdatalokasi()
+    {
+        $data['lstdt'] = $this->cabang_model->get();
+        $result = $data['lstdt'];
+        $this->output->set_content_type('application_json');
+        $this->output->set_output(json_encode($result));
+        return $result;
+    }
+
+    
+    public function getloaddtlokasi($id)
+    {
+        $data['lstdt'] = $this->cabang_model -> get(array(
+            'idpackage' => $id
+        ));
+        $result = $data['lstdt'];
+        $this->output->set_content_type('application_json');
+        $this->output->set_output(json_encode($result));
+        return $result;
     }
 
     public function getdtjamaah_agent()
